@@ -1,0 +1,4 @@
+*.bat
+**/bin
+**/builtinVMcode
+**/src/*.vm
