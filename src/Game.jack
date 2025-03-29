@@ -1,0 +1,60 @@
+class Game{
+    field Player player1;
+    field Player player2;
+    field Player currentPlayer;
+    field Board board;
+    field int gameState; 
+
+    constructor Game new(Player Player1, Player Player2, Board Board)
+    {
+        let player1 = Player1; let player2 = Player2; let currentPlayer = player1;
+        let board = Board;
+        let gameState = GameState.playing();
+        return this;
+    }
+
+    method void makeMove(int x, int y)
+    {
+        var boolean isWinner, isStopped;
+        var Cell cell;
+        let cell = Cell.new(x, y, currentPlayer.getValue());
+        do board.makeMove(cell);
+        let isWinner = board.checkWinner(); let isStopped = board.allCellsFilled();
+        
+        if (isWinner){
+            let gameState = GameState.win();
+        }
+        if (isStopped){
+            let gameState = GameState.draw();
+        }
+        let gameState = GameState.playing();
+        do SwitchPlayer();
+        return;
+    }
+
+    method Player returnWinnerIfExists(){
+        var char valueWinner;
+        let valueWinner = board.getWinnerChar();
+        if (valueWinner = CellValue.x()){
+            return player1;
+        }
+        if (valueWinner = CellValue.y()){
+            return player2;
+        }
+        return null;
+    }
+
+    method boolean IsGameStopped(){
+        return board.allCellsFilled();
+    }
+
+    method void SwitchPlayer(){
+        if (currentPlayer = player1){
+            let currentPlayer = player2;
+        }
+        else{
+            let currentPlayer = player1;
+        }
+        return;
+    }
+}

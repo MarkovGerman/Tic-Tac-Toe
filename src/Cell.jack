@@ -1,0 +1,36 @@
+class Cell
+{
+    field int x, y;
+    field char value;
+
+    constructor Cell new(int X, int Y, char Value)
+    {
+        let x = X;
+        let y = Y;
+        let value = Value;
+        return this;
+    }
+
+    method int getX(){
+        return x;
+    }
+
+    method int getY(){
+        return y;
+    }
+
+    method char getValue(){
+        return value;
+    }
+ 
+    method boolean isFilled()
+    {
+        return ~(value = CellValue.empty());
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

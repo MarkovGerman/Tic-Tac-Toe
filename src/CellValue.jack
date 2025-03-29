@@ -1,0 +1,13 @@
+class CellValue{
+    function char x() {
+        return 88;
+    }
+
+    function char y() {
+        return 79;
+    }
+
+    function char empty(){
+        return 95;
+    }
+}

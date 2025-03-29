@@ -1,0 +1,13 @@
+class GameState{
+    function int playing(){
+        return 0;
+    }
+
+    function int draw(){
+        return 1;
+    }
+
+    function int win(){
+        return 2;
+    }
+}
