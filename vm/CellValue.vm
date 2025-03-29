@@ -1,0 +1,9 @@
+function CellValue.x 0
+push constant 88
+return
+function CellValue.y 0
+push constant 79
+return
+function CellValue.empty 0
+push constant 95
+return

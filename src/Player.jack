@@ -1,0 +1,18 @@
+class Player
+{
+    field String name;
+    field int number;
+    field char value;
+
+    constructor Player new(string Name, int Number, char Value)
+    {
+        let name = Name;
+        let number = Number;
+        let value = Value;
+        return this;
+    }
+
+    method char getValue(){
+        return value;
+    }
+}

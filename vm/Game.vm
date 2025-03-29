@@ -1,0 +1,106 @@
+function Game.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push this 0
+pop this 2
+push argument 2
+pop this 3
+call GameState.playing 0
+pop this 4
+push pointer 0
+return
+function Game.makeMove 3
+push argument 0
+pop pointer 0
+push argument 1
+push argument 2
+push this 2
+call Player.getValue 1
+call Cell.new 3
+pop local 2
+push this 3
+push local 2
+call Board.makeMove 2
+pop temp 0
+push this 3
+call Board.checkWinner 1
+pop local 0
+push this 3
+call Board.allCellsFilled 1
+pop local 1
+push local 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call GameState.win 0
+pop this 4
+label IF_FALSE0
+push local 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call GameState.draw 0
+pop this 4
+label IF_FALSE1
+call GameState.playing 0
+pop this 4
+push pointer 0
+call Game.SwitchPlayer 1
+pop temp 0
+push constant 0
+return
+function Game.returnWinnerIfExists 1
+push argument 0
+pop pointer 0
+push this 3
+call Board.getWinnerChar 1
+pop local 0
+push local 0
+call CellValue.x 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+return
+label IF_FALSE0
+push local 0
+call CellValue.y 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 1
+return
+label IF_FALSE1
+push constant 0
+return
+function Game.IsGameStopped 0
+push argument 0
+pop pointer 0
+push this 3
+call Board.allCellsFilled 1
+return
+function Game.SwitchPlayer 0
+push argument 0
+pop pointer 0
+push this 2
+push this 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 1
+pop this 2
+goto IF_END0
+label IF_FALSE0
+push this 0
+pop this 2
+label IF_END0
+push constant 0
+return
