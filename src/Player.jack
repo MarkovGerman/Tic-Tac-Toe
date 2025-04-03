@@ -4,7 +4,7 @@ class Player
     field int number;
     field char value;
 
-    constructor Player new(string Name, int Number, char Value)
+    constructor Player new(String Name, int Number, char Value)
     {
         let name = Name;
         let number = Number;

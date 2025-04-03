@@ -13,23 +13,42 @@ class Game{
         return this;
     }
 
-    method void makeMove(int x, int y)
+    method void dispose()
+    {
+        do Memory.deAlloc(player1);
+        do Memory.deAlloc(player2);
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method boolean tryMakeMove(int x, int y)
     {
         var boolean isWinner, isStopped;
         var Cell cell;
         let cell = Cell.new(x, y, currentPlayer.getValue());
+        if (board.isCellFilled(x,y)){
+            return false;
+        }
         do board.makeMove(cell);
         let isWinner = board.checkWinner(); let isStopped = board.allCellsFilled();
         
         if (isWinner){
             let gameState = GameState.win();
+            return true;
         }
+
         if (isStopped){
             let gameState = GameState.draw();
+            return true;
         }
+
         let gameState = GameState.playing();
-        do SwitchPlayer();
-        return;
+        return true;
+    }
+
+    method int getGameState(){
+        return gameState;
     }
 
     method Player returnWinnerIfExists(){
@@ -44,11 +63,15 @@ class Game{
         return null;
     }
 
+    method Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
     method boolean IsGameStopped(){
         return board.allCellsFilled();
     }
 
-    method void SwitchPlayer(){
+    method void switchPlayer(){
         if (currentPlayer = player1){
             let currentPlayer = player2;
         }

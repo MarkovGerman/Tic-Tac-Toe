@@ -1,0 +1,35 @@
+class InputUtil {
+
+    field int ir,ic;
+
+	constructor InputUtil new(){
+		let ir = 0;
+		let ic = 0;
+		return this;
+	}
+
+	method void eraseMessage() {
+		var String s;
+		do Output.moveCursor(ir,ic);
+		let s = "                                                 ";
+		do Output.printString(s);
+		do Output.moveCursor(ir,ic);
+		do s.dispose();
+		return;
+	}
+
+    method int readInput(String s) {
+		var char choice;
+		do eraseMessage();		
+		while(true) {
+			do Output.moveCursor(ir,ic);
+			do Output.printString(s);
+			let choice = Keyboard.readChar();
+			if((choice>47) & (choice<58)) {
+				do s.dispose();
+				return choice-48;
+			}
+		}
+		return 0;
+	}
+}

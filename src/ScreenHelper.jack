@@ -1,0 +1,38 @@
+class ScreenHelper{
+
+
+    function int getLocation(int row, int registryColumn){
+        return ((row - 1) * 32) + registryColumn;
+    }
+
+    function int getFirstRowOfGame(){
+        return 96;
+    }
+
+    function int getFirstColumnWordOfGame(){
+        return 12;
+    }
+
+    function int getRowPostitionInScreen(int row){
+        return (ScreenHelper.getFirstRowOfGame() + (row * 48));
+    }
+
+    function int getColumnWordInScreen(int column){
+        return (ScreenHelper.getFirstColumnWordOfGame() + (column * 3));
+    }
+
+    function void drawGameField(){
+        do Drawer.drawGameField(ScreenHelper.getLocation(ScreenHelper.getFirstRowOfGame(), ScreenHelper.getFirstColumnWordOfGame()));
+        return;
+    }
+
+    function void drawCross(int x, int y){
+        do Drawer.drawCross(ScreenHelper.getLocation(ScreenHelper.getRowPostitionInScreen(x), ScreenHelper.getColumnWordInScreen(y)));
+        return;
+    }
+
+    function void drawCircle(int x, int y){
+        do Drawer.drawCircle(ScreenHelper.getLocation(ScreenHelper.getRowPostitionInScreen(x), ScreenHelper.getColumnWordInScreen(y)));
+        return;
+    }
+}
