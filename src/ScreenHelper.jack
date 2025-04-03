@@ -1,6 +1,4 @@
 class ScreenHelper{
-
-
     function int getLocation(int row, int registryColumn){
         return ((row - 1) * 32) + registryColumn;
     }

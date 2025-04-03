@@ -1,6 +1,6 @@
 class Main{
     function void main(){
-        do GameHandler.startGame();
+        do GameHandler.start();
         return;
     }
 }

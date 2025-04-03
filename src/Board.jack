@@ -46,11 +46,9 @@ class Board
     {
         var int i;
         var boolean isRowWinner, isColumnWinner;
-        var boolean isMainDiagWinner, isSecondaryDiagWinner, isWinner;
 
         let i = 0;
-        let isWinner = false;
-        while ((i < length) & (~isWinner))
+        while ((i < length) )
         {
             let isRowWinner = IsRowWin(i); let isColumnWinner = IsColumnWin(i);
             if (isRowWinner | isColumnWinner){
@@ -58,8 +56,8 @@ class Board
             }
             let i = i + 1;
         }
-        let isMainDiagWinner = IsMainDiagWin(); let isSecondaryDiagWinner = IsSecondaryDiagWin();
-        return isMainDiagWinner | isSecondaryDiagWinner;
+
+        return IsMainDiagWin() | IsSecondaryDiagWin();
     }
 
     method boolean IsRowWin(int number)
@@ -77,7 +75,7 @@ class Board
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[i - 1];
         let winnerValue = cell.getValue();
         return true;
     }
@@ -117,7 +115,7 @@ class Board
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[i - 1];
         let winnerValue = cell.getValue();
         return true;
     }
@@ -127,18 +125,17 @@ class Board
         var int i;
         var Cell cell, currCell, prevCell;
         var Array row, previousRow;
-
         let i = 1;
         while (i < length){
             let row = cells[i]; let previousRow = cells[i-1];
-            let currCell = previousRow[length - i]; let prevCell = row[length - 1 - i];
+            let currCell = row[length - i - 1]; let prevCell = previousRow[length - i];
             if (~(currCell.equalsByValue(prevCell)) | currCell.isEmpty())
             {
                 return false;
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[i - 1];
         let winnerValue = cell.getValue();
         return true;
     }
@@ -156,7 +153,7 @@ class Board
             while (j < length)
             {
                 let cell = row[j];
-                if (~(cell.isFilled())){
+                if (cell.isEmpty()){
                     return false;
                 }
                 let j = j+1;

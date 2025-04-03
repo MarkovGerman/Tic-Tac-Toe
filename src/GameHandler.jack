@@ -1,18 +1,41 @@
 class GameHandler{
     static int boardSize;
 
-    function void startGame(){
-        var String firstNameAsk; var String secondNameAsk;
-        var String firstName; var String secondName; 
-        var Player firstPlayer;  var Player secondPlayer;
-        var Game game;
-        var Board board;
-        var int input;
+    function void start(){
         var InputUtil inputUtil;
+        var Game game;
+        var int input;
+        var int size;
 
-        let boardSize = 3;
+        let size = 3;
         let inputUtil = InputUtil.new();
 
+        let game = GameHandler.handleInitNewGame(inputUtil, size);
+
+        while (game.getGameState() = GameState.playing()) {
+            let input = inputUtil.readInput("Enter number of cell. For reset type 0:");
+
+            if (input = 0) {
+                do Screen.clearScreen();
+                let game = GameHandler.handleInitNewGame(inputUtil, size);
+            
+            }
+            else{
+                do GameHandler.handlePlayerMove(input, game, size);
+            }
+        }
+
+        do game.dispose();
+        return;
+    }
+
+    function Game handleInitNewGame(InputUtil inputUtil, int boardSize){
+
+        var String firstNameAsk; var String secondNameAsk;
+        var String firstName; var String secondName; 
+        var Player firstPlayer; var Player secondPlayer;
+        var Board board;
+       
         let firstNameAsk = "First player name:";
         let secondNameAsk = "Second player name:";
 
@@ -28,27 +51,14 @@ class GameHandler{
         let secondPlayer = Player.new(secondName, 2, CellValue.y());
         
         let board = Board.new(boardSize);
-        let game = Game.new(firstPlayer, secondPlayer, board);
-
-        do inputUtil.eraseMessage();
 
         do ScreenHelper.drawGameField();
 
-        while (game.getGameState() = GameState.playing()) {
-            let input = inputUtil.readInput("Enter number of cell. For reset type 0:");
-
-            if (input = 0) {
-                do board.clear();
-            }
-
-            do GameHandler.handlePlayerMove(input,game);
-        }
-        do game.dispose();
-        return;
+        return Game.new(firstPlayer, secondPlayer, board);
     }
 
 
-    function void handlePlayerMove(int input, Game game){
+    function void handlePlayerMove(int input, Game game, int boardSize){
         var int x; var int y;
         var Player currentPlayer;
         var boolean succsess; 
