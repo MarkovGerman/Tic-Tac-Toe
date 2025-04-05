@@ -28,6 +28,14 @@ class Cell
         return ~(value = CellValue.empty());
     }
 
+    method boolean isEmpty(){
+        return value = CellValue.empty();
+    }
+
+    method boolean equalsByValue(Cell other){
+        return value = other.getValue();
+    }
+
     method void dispose()
     {
         do Memory.deAlloc(this);

@@ -1,17 +1,10 @@
 class Main{
     function void main(){
-        var Game game;
-        var Board board;
-        var Player player1, player2;
-        let player1 = Player.new(String.new(50), 1, CellValue.x());
-        let player2 = Player.new(String.new(50), 2, CellValue.y());
-        let board = Board.new(3);
-        let game = Game.new(player1, player2, board);
+        var GameHandler gameHandler;
 
-        do game.makeMove(1, 1);
-        do board.print();
-        do board.dispose();
-        do cell.dispose();
+        let gameHandler = GameHandler.new();
+        do gameHandler.start();
+        do gameHandler.dispose();
         return;
     }
 }

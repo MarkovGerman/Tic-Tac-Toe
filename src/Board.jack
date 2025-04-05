@@ -46,11 +46,10 @@ class Board
     {
         var int i;
         var boolean isRowWinner, isColumnWinner;
-        var boolean isMainDiagWinner, isSecondaryDiagWinner, isWinner;
+        var boolean isMainDiagWinner, isSecondaryDiagWinner;
 
         let i = 0;
-        let isWinner = false;
-        while ((i < length) & (~isWinner))
+        while ((i < length) )
         {
             let isRowWinner = IsRowWin(i); let isColumnWinner = IsColumnWin(i);
             if (isRowWinner | isColumnWinner){
@@ -58,6 +57,7 @@ class Board
             }
             let i = i + 1;
         }
+
         let isMainDiagWinner = IsMainDiagWin(); let isSecondaryDiagWinner = IsSecondaryDiagWin();
         return isMainDiagWinner | isSecondaryDiagWinner;
     }
@@ -66,30 +66,35 @@ class Board
     {
         var int i;
         var Array row;
-        var Cell cell;
+        var Cell cell, currCell, prevCell;
         let i = 1;
         let row = cells[number];
         while (i < length){
-            if (~(row[i] = row[i - 1]))
+            let currCell = row[i]; let prevCell = row[i - 1];
+            if (~(currCell.equalsByValue(prevCell)) | currCell.isEmpty())
             {
                 return false;
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[i - 1];
         let winnerValue = cell.getValue();
+
+        do row.dispose();
+
         return true;
     }
 
     method boolean IsColumnWin(int number)
     {
         var int i;
-        var Cell cell;
+        var Cell cell, currCell, prevCell;
         var Array row, previousRow;
         let i = 1;
         while (i < length){
             let row = cells[i]; let previousRow = cells[i - 1];
-            if (~(row[number] = previousRow[number]))
+            let currCell = row[number]; let prevCell = previousRow[number];
+            if (~(currCell.equalsByValue(prevCell)) | currCell.isEmpty())
             {
                 return false;
             }
@@ -97,45 +102,58 @@ class Board
         }
         let cell = row[number];
         let winnerValue = cell.getValue();
+
+        do row.dispose();
+        do previousRow.dispose();
+        
         return true;
     }
 
     method boolean IsMainDiagWin()
     {
         var int i;
-        var Cell cell;
+        var Cell cell, currCell, prevCell;
         var Array row, previousRow;
         let i = 1;
         while (i < length){
             let row = cells[i]; let previousRow = cells[i-1];
-            if (~(row[i] = previousRow[i - 1]))
+            let currCell = row[i]; let prevCell = previousRow[i - 1];
+            if (~(currCell.equalsByValue(prevCell)) | currCell.isEmpty())
             {
                 return false;
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[i - 1];
         let winnerValue = cell.getValue();
+
+        do row.dispose();
+        do previousRow.dispose();
+
         return true;
     }
 
     method boolean IsSecondaryDiagWin()
     {
         var int i;
-        var Cell cell;
+        var Cell cell, currCell, prevCell;
         var Array row, previousRow;
-
         let i = 1;
         while (i < length){
             let row = cells[i]; let previousRow = cells[i-1];
-            if (~(previousRow[length - i] = row[length - 1 - i]))
+            let currCell = row[length - i - 1]; let prevCell = previousRow[length - i];
+            if (~(currCell.equalsByValue(prevCell)) | currCell.isEmpty())
             {
                 return false;
             }
             let i = i + 1;
         }
-        let cell = row[i];
+        let cell = row[0];
         let winnerValue = cell.getValue();
+
+        do row.dispose();
+        do previousRow.dispose();
+
         return true;
     }
 
@@ -152,12 +170,25 @@ class Board
             while (j < length)
             {
                 let cell = row[j];
-                if (~(cell.isFilled())){
+                if (cell.isEmpty()){
                     return false;
                 }
+                let j = j+1;
             }
+
+            let i = i+1;
         }
         return true;
+    }
+
+    method boolean isCellFilled(int x, int y){
+        var Array row;
+        var Cell cell;
+
+        let row = cells[x];
+        let cell = row[y];
+
+        return cell.isFilled();
     }
 
     method void clear(){

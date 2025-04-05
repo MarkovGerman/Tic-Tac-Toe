@@ -4,7 +4,7 @@ class Player
     field int number;
     field char value;
 
-    constructor Player new(string Name, int Number, char Value)
+    constructor Player new(String Name, int Number, char Value)
     {
         let name = Name;
         let number = Number;
@@ -14,5 +14,9 @@ class Player
 
     method char getValue(){
         return value;
+    }
+
+    method String getName(){
+        return name;
     }
 }

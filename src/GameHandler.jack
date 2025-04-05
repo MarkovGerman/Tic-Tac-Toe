@@ -1,0 +1,154 @@
+class GameHandler {
+    field InputUtil inputUtil;
+    field Game game;
+    field int size;
+    field int makeMoveMessageLength;
+    field Player firstPlayer, secondPlayer;
+
+    constructor GameHandler new() {
+        let size = 3;
+        let inputUtil = InputUtil.new();
+        
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(inputUtil);
+        if (~(game = null)) {
+            do game.dispose();
+        }
+        return;
+    }
+
+    method void start() {
+        var boolean exit;
+        var char input;
+
+        do handlePlayerAdd();
+        
+        while (~exit) {
+            let game = handleInitNewGame();
+            
+            while (game.getGameState() = GameState.playing()) {
+                let input = inputUtil.readDigit(getMakeMoveMessage(), makeMoveMessageLength);
+                
+                if (input = 0) {
+                    let game = handleInitNewGame();
+                }
+                else {
+                    do handlePlayerMove(input);
+                }
+            }
+
+            let exit = handleGameStopAndAskGoToExit();
+        }
+
+        do inputUtil.eraseMessage();
+        do Output.printString("Goodbye!");
+        
+        return;
+    }
+
+    method void handlePlayerAdd(){
+        var String firstNameAsk, secondNameAsk;
+        var String firstName, secondName; 
+
+        let firstNameAsk = "First player name:";
+        let secondNameAsk = "Second player name:";
+
+        let firstName = Keyboard.readLine(firstNameAsk);
+        do inputUtil.eraseMessage();
+        do firstNameAsk.dispose();
+
+        let secondName = Keyboard.readLine(secondNameAsk);
+        do inputUtil.eraseMessage();
+        do secondNameAsk.dispose();
+        
+        let firstPlayer = Player.new(firstName, 1, CellValue.x());
+        let secondPlayer = Player.new(secondName, 2, CellValue.y());
+        
+        return;
+    }
+
+    method Array getMakeMoveMessage() {
+        var Array a;
+        var Player player;
+
+        let makeMoveMessageLength = 2;
+        let player = game.getCurrentPlayer();
+        let a = Array.new(makeMoveMessageLength);
+
+        let a[0] = player.getName();
+        let a[1] = ", make move! Type from 1 to 9. For reset type 0";
+        
+        return a;
+    }
+
+    method Game handleInitNewGame() {
+        var Board board;
+        
+        do Screen.clearScreen();
+        do inputUtil.eraseMessage();
+       
+        let board = Board.new(size);
+        do ScreenHelper.drawGameField();
+
+        return Game.new(firstPlayer, secondPlayer, board);
+    }
+
+    method void handlePlayerMove(int input) {
+        var int x, y;
+        var Player currentPlayer;
+        var boolean succsess; 
+
+        let x = (input - 1) / size;
+        let y = MathExt.mod(input - 1, size);
+        let currentPlayer = game.getCurrentPlayer();
+        
+        let succsess = game.tryMakeMove(x, y);
+        if (succsess) {
+            if (currentPlayer.getValue() = CellValue.x()) {
+                do ScreenHelper.drawCross(x, y);
+            }
+            else {
+                do ScreenHelper.drawCircle(x, y);
+            }
+            do game.switchPlayer();
+        }
+        return;
+    }
+
+    method boolean handleGameStopAndAskGoToExit() {
+        var String endGameMessage;
+        var Player winner;
+        var Array message;
+        var char input;
+        var String exitCharString;
+        var char exitChar;
+        var String drawString; var String winString;
+
+
+        let exitCharString = "E";
+        let exitChar = exitCharString.charAt(0);
+
+        let winner = game.returnWinnerIfExists();
+
+        if (winner = null) {
+            let endGameMessage = "Draw. For exit type e";
+            let message = Array.new(1);
+            let message[0] = endGameMessage;
+            let input = inputUtil.readChar(message, 1);
+        }
+        else {
+            let endGameMessage = " wins! For exit type e.";
+            let message = Array.new(2);
+            let message[0] = winner.getName();
+            let message[1] = endGameMessage;
+            let input = inputUtil.readChar(message, 2);
+        }
+
+        do endGameMessage.dispose();
+        do message.dispose();
+        return input = exitChar;
+    }
+}

@@ -1,0 +1,57 @@
+function ScreenHelper.getLocation 0
+push argument 0
+push constant 1
+sub
+push constant 32
+call Math.multiply 2
+push argument 1
+add
+return
+function ScreenHelper.getFirstRowOfGame 0
+push constant 96
+return
+function ScreenHelper.getFirstColumnWordOfGame 0
+push constant 12
+return
+function ScreenHelper.getRowPostitionInScreen 0
+call ScreenHelper.getFirstRowOfGame 0
+push argument 0
+push constant 48
+call Math.multiply 2
+add
+return
+function ScreenHelper.getColumnWordInScreen 0
+call ScreenHelper.getFirstColumnWordOfGame 0
+push argument 0
+push constant 3
+call Math.multiply 2
+add
+return
+function ScreenHelper.drawGameField 0
+call ScreenHelper.getFirstRowOfGame 0
+call ScreenHelper.getFirstColumnWordOfGame 0
+call ScreenHelper.getLocation 2
+call Drawer.drawGameField 1
+pop temp 0
+push constant 0
+return
+function ScreenHelper.drawCross 0
+push argument 0
+call ScreenHelper.getRowPostitionInScreen 1
+push argument 1
+call ScreenHelper.getColumnWordInScreen 1
+call ScreenHelper.getLocation 2
+call Drawer.drawCross 1
+pop temp 0
+push constant 0
+return
+function ScreenHelper.drawCircle 0
+push argument 0
+call ScreenHelper.getRowPostitionInScreen 1
+push argument 1
+call ScreenHelper.getColumnWordInScreen 1
+call ScreenHelper.getLocation 2
+call Drawer.drawCircle 1
+pop temp 0
+push constant 0
+return
