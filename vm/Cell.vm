@@ -33,6 +33,21 @@ call CellValue.empty 0
 eq
 not
 return
+function Cell.isEmpty 0
+push argument 0
+pop pointer 0
+push this 2
+call CellValue.empty 0
+eq
+return
+function Cell.equalsByValue 0
+push argument 0
+pop pointer 0
+push this 2
+push argument 1
+call Cell.getValue 1
+eq
+return
 function Cell.dispose 0
 push argument 0
 pop pointer 0

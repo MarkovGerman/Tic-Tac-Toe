@@ -95,20 +95,15 @@ push temp 0
 pop that 0
 push constant 0
 return
-function Board.checkWinner 6
+function Board.checkWinner 5
 push argument 0
 pop pointer 0
 push constant 0
 pop local 0
-push constant 0
-pop local 5
 label WHILE_EXP0
 push local 0
 push this 1
 lt
-push local 5
-not
-and
 not
 if-goto WHILE_END0
 push pointer 0
@@ -145,7 +140,7 @@ push local 3
 push local 4
 or
 return
-function Board.IsRowWin 3
+function Board.IsRowWin 5
 push argument 0
 pop pointer 0
 push constant 1
@@ -164,142 +159,25 @@ not
 if-goto WHILE_END0
 push local 0
 push local 1
-add
-pop pointer 1
-push that 0
-push local 0
-push constant 1
-sub
-push local 1
-add
-pop pointer 1
-push that 0
-eq
-not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push constant 0
-return
-label IF_FALSE0
-push local 0
-push constant 1
-add
-pop local 0
-goto WHILE_EXP0
-label WHILE_END0
-push local 0
-push local 1
-add
-pop pointer 1
-push that 0
-pop local 2
-push local 2
-call Cell.getValue 1
-pop this 2
-push constant 0
-not
-return
-function Board.IsColumnWin 4
-push argument 0
-pop pointer 0
-push constant 1
-pop local 0
-label WHILE_EXP0
-push local 0
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 0
-push this 0
-add
-pop pointer 1
-push that 0
-pop local 2
-push local 0
-push constant 1
-sub
-push this 0
-add
-pop pointer 1
-push that 0
-pop local 3
-push argument 1
-push local 2
-add
-pop pointer 1
-push that 0
-push argument 1
-push local 3
-add
-pop pointer 1
-push that 0
-eq
-not
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push constant 0
-return
-label IF_FALSE0
-push local 0
-push constant 1
-add
-pop local 0
-goto WHILE_EXP0
-label WHILE_END0
-push argument 1
-push local 2
-add
-pop pointer 1
-push that 0
-pop local 1
-push local 1
-call Cell.getValue 1
-pop this 2
-push constant 0
-not
-return
-function Board.IsMainDiagWin 4
-push argument 0
-pop pointer 0
-push constant 1
-pop local 0
-label WHILE_EXP0
-push local 0
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 0
-push this 0
-add
-pop pointer 1
-push that 0
-pop local 2
-push local 0
-push constant 1
-sub
-push this 0
 add
 pop pointer 1
 push that 0
 pop local 3
 push local 0
-push local 2
-add
-pop pointer 1
-push that 0
-push local 0
 push constant 1
 sub
-push local 3
+push local 1
 add
 pop pointer 1
 push that 0
-eq
+pop local 4
+push local 3
+push local 4
+call Cell.equalsByValue 2
 not
+push local 3
+call Cell.isEmpty 1
+or
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -313,18 +191,23 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push local 0
-push local 2
+push constant 1
+sub
+push local 1
 add
 pop pointer 1
 push that 0
-pop local 1
-push local 1
+pop local 2
+push local 2
 call Cell.getValue 1
 pop this 2
+push local 1
+call Array.dispose 1
+pop temp 0
 push constant 0
 not
 return
-function Board.IsSecondaryDiagWin 4
+function Board.IsColumnWin 6
 push argument 0
 pop pointer 0
 push constant 1
@@ -340,7 +223,7 @@ push this 0
 add
 pop pointer 1
 push that 0
-pop local 2
+pop local 4
 push local 0
 push constant 1
 sub
@@ -348,25 +231,102 @@ push this 0
 add
 pop pointer 1
 push that 0
-pop local 3
-push this 1
-push local 0
-sub
-push local 3
+pop local 5
+push argument 1
+push local 4
 add
 pop pointer 1
 push that 0
+pop local 2
+push argument 1
+push local 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push local 2
+push local 3
+call Cell.equalsByValue 2
+not
+push local 2
+call Cell.isEmpty 1
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push argument 1
+push local 4
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Cell.getValue 1
+pop this 2
+push local 4
+call Array.dispose 1
+pop temp 0
+push local 5
+call Array.dispose 1
+pop temp 0
+push constant 0
+not
+return
+function Board.IsMainDiagWin 6
+push argument 0
+pop pointer 0
+push constant 1
+pop local 0
+label WHILE_EXP0
+push local 0
 push this 1
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 4
+push local 0
 push constant 1
 sub
-push local 0
-sub
-push local 2
+push this 0
 add
 pop pointer 1
 push that 0
-eq
+pop local 5
+push local 0
+push local 4
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 0
+push constant 1
+sub
+push local 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push local 2
+push local 3
+call Cell.equalsByValue 2
 not
+push local 2
+call Cell.isEmpty 1
+or
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
@@ -380,7 +340,9 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push local 0
-push local 2
+push constant 1
+sub
+push local 4
 add
 pop pointer 1
 push that 0
@@ -388,6 +350,92 @@ pop local 1
 push local 1
 call Cell.getValue 1
 pop this 2
+push local 4
+call Array.dispose 1
+pop temp 0
+push local 5
+call Array.dispose 1
+pop temp 0
+push constant 0
+not
+return
+function Board.IsSecondaryDiagWin 6
+push argument 0
+pop pointer 0
+push constant 1
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 1
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 4
+push local 0
+push constant 1
+sub
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 5
+push this 1
+push local 0
+sub
+push constant 1
+sub
+push local 4
+add
+pop pointer 1
+push that 0
+pop local 2
+push this 1
+push local 0
+sub
+push local 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push local 2
+push local 3
+call Cell.equalsByValue 2
+not
+push local 2
+call Cell.isEmpty 1
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+push local 4
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Cell.getValue 1
+pop this 2
+push local 4
+call Array.dispose 1
+pop temp 0
+push local 5
+call Array.dispose 1
+pop temp 0
 push constant 0
 not
 return
@@ -423,20 +471,45 @@ pop pointer 1
 push that 0
 pop local 3
 push local 3
-call Cell.isFilled 1
-not
+call Cell.isEmpty 1
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 0
 return
 label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
 goto WHILE_EXP1
 label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 not
+return
+function Board.isCellFilled 2
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 2
+push local 0
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Cell.isFilled 1
 return
 function Board.clear 3
 push argument 0
