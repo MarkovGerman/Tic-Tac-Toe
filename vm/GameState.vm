@@ -1,0 +1,9 @@
+function GameState.playing 0
+push constant 0
+return
+function GameState.draw 0
+push constant 1
+return
+function GameState.win 0
+push constant 2
+return

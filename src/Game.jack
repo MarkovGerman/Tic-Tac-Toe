@@ -1,0 +1,83 @@
+class Game{
+    field Player player1;
+    field Player player2;
+    field Player currentPlayer;
+    field Board board;
+    field int gameState; 
+
+    constructor Game new(Player Player1, Player Player2, Board Board)
+    {
+        let player1 = Player1; let player2 = Player2; let currentPlayer = player1;
+        let board = Board;
+        let gameState = GameState.playing();
+        return this;
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(player1);
+        do Memory.deAlloc(player2);
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method boolean tryMakeMove(int x, int y)
+    {
+        var boolean isWinner, isStopped;
+        var Cell cell;
+        let cell = Cell.new(x, y, currentPlayer.getValue());
+        if (board.isCellFilled(x,y)){
+            return false;
+        }
+        do board.makeMove(cell);
+        let isWinner = board.checkWinner(); let isStopped = board.allCellsFilled();
+        
+        if (isWinner){
+            let gameState = GameState.win();
+            return true;
+        }
+
+        if (isStopped){
+            let gameState = GameState.draw();
+            return true;
+        }
+
+        let gameState = GameState.playing();
+        return true;
+    }
+
+    method int getGameState(){
+        return gameState;
+    }
+
+    method Player returnWinnerIfExists(){
+        var char valueWinner;
+        let valueWinner = board.getWinnerChar();
+        if (valueWinner = CellValue.x()){
+            return player1;
+        }
+        if (valueWinner = CellValue.y()){
+            return player2;
+        }
+        return null;
+    }
+
+    method Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    method boolean IsGameStopped(){
+        return board.allCellsFilled();
+    }
+
+    method void switchPlayer(){
+        if (currentPlayer = player1){
+            let currentPlayer = player2;
+        }
+        else{
+            let currentPlayer = player1;
+        }
+        return;
+    }
+}
