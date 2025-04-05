@@ -11,25 +11,55 @@ class InputUtil {
 	method void eraseMessage() {
 		var String s;
 		do Output.moveCursor(ir,ic);
-		let s = "                                                 ";
+		let s = "                                                              ";
 		do Output.printString(s);
 		do Output.moveCursor(ir,ic);
 		do s.dispose();
 		return;
 	}
 
-    method int readInput(String s) {
+    method int readDigit(Array message, int length) {
 		var char choice;
+		var int i;
+		var String s;
 		do eraseMessage();		
 		while(true) {
 			do Output.moveCursor(ir,ic);
-			do Output.printString(s);
+			let i = 0;
+			while (i < length) {
+				let s = message[i];
+				do Output.printString(s);
+				let i = i + 1;
+			}
+		
 			let choice = Keyboard.readChar();
 			if((choice>47) & (choice<58)) {
+				do message.dispose();
 				do s.dispose();
+
 				return choice-48;
 			}
 		}
 		return 0;
+	}
+
+	method char readChar(Array message, int length){
+		var char choice;
+		var int i;
+		var String s;
+
+		do eraseMessage();		
+		do Output.moveCursor(ir,ic);
+		
+		let i = 0;
+		while (i < length) {
+			let s = message[i];
+			do Output.printString(s);
+			let i = i + 1;
+		}
+	
+		let choice = Keyboard.readChar();
+		
+		return choice;
 	}
 }

@@ -15,4 +15,8 @@ class Player
     method char getValue(){
         return value;
     }
+
+    method String getName(){
+        return name;
+    }
 }
